@@ -198,13 +198,43 @@ class Chunk(object):
         self.zoom = zoom
         self.maptype = maptype
         self.cache_dir = cache_dir
-        
+        # if zoom == 12:
+        #     self.col = 2127
+        #     self.row = 1211
+        #
+        # if zoom == 13:
+        #     self.col = 4255
+        #     self.row = 2423
+        #
+        # if zoom == 14:
+        #     self.col = 8499
+        #     self.row = 4579
+        #
+        # if zoom == 15:
+        #     self.col = 16999
+        #     self.row = 9159
+        #
+        # if zoom == 16:
+        #     self.col = 34047
+        #     self.row = 19376
+        #
+        # if zoom == 17:
+        #     self.col = 67455
+        #     self.row = 37863
+        #
+        # if zoom == 18:
+        #     self.col = 135999
+        #     self.row = 73264
+        #
+
+
         # Hack override maptype
         #self.maptype = "BI"
 
         if not priority:
             self.priority = zoom
         self.chunk_id = f"{col}_{row}_{zoom}_{maptype}"
+
         self.ready = threading.Event()
         self.ready.clear()
         if maptype == "Null":
@@ -232,7 +262,7 @@ class Chunk(object):
                 # FFD8FF identifies image as a JPEG
                 log.info(f"Loading file {self} not a JPEG! {data[:3]} path: {self.cache_path}")
                 self.data = b''
-            #    return False
+                return False
             else:
                 self.data = data
             return True
@@ -246,6 +276,7 @@ class Chunk(object):
 
         with open(self.cache_path, 'wb') as h:
             h.write(self.data)
+
 
     def get(self, idx=0):
         log.debug(f"Getting {self}") 
@@ -347,6 +378,36 @@ class Tile(object):
             cache_dir=None):
         self.row = int(row)
         self.col = int(col)
+
+        # if zoom == 12:
+        #     self.col = 2127
+        #     self.row = 1211
+        #
+        # if zoom == 13:
+        #     self.col = 4255
+        #     self.row = 2423
+        #
+        # if zoom == 14:
+        #     self.col = 8499
+        #     self.row = 4579
+        #
+        # if zoom == 15:
+        #     self.col = 16999
+        #     self.row = 9159
+        #
+        # if zoom == 16:
+        #     self.col = 34047
+        #     self.row = 19376
+        #
+        # if zoom == 17:
+        #     self.col = 67455
+        #     self.row = 37863
+        #
+        # if zoom == 18:
+        #     self.col = 135999
+        #     self.row = 73264
+        #
+
         self.maptype = maptype
         self.zoom = int(zoom)
         self.chunks = {}
@@ -501,8 +562,14 @@ class Tile(object):
             #pydds.to_dds(new_im, outfile)
             self.dds.gen_mipmaps(new_im)
             self.dds.write(outfile)
+
+            if subprocess.run(["nvddsinfo", outfile]).returncode != 0:
+                log.error(f"Invalid DDS {outfile}")
+            else:
+                log.info(f"Valid DDS {outfile}")
+
         except:
-            #log.error(f"Error detected for {self} {outfile}, remove possibly corrupted files.")
+            log.error(f"Error detected for {self} {outfile}, remove possibly corrupted files.")
             #os.remove(outfile)
             raise
         finally:
@@ -676,6 +743,13 @@ class Tile(object):
         outfile = os.path.join(self.cache_dir, f"{self.row}_{self.col}_{self.maptype}_{self.zoom}_{self.zoom}.dds")
         self.ready.clear()
         self.dds.write(outfile)
+
+        if subprocess.run(["nvddsinfo", outfile]).returncode != 0:
+            log.error(f"Invalid DDS {outfile}")
+        else:
+            log.info(f"Valid DDS {outfile}")
+
+
         self.ready.set()
         return outfile
 
@@ -684,6 +758,12 @@ class Tile(object):
         
         self.ready.clear()
         self.dds.write(outfile)
+
+        if subprocess.run(["nvddsinfo", outfile]).returncode != 0:
+            log.error(f"Invalid DDS {outfile}")
+        else:
+            log.info(f"Valid DDS {outfile}")
+
         self.ready.set()
         return outfile
 
