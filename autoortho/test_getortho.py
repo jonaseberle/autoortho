@@ -45,12 +45,15 @@ def test_get_bytes(tmpdir):
     assert ret
     
     testfile = tile.write()
-    with open(testfile, 'rb') as h:
-        h.seek(128)
-        data = h.read(8)
-        # Verify that we still get data for the read on this odd row
-        h.seek(131200)
-        mmdata = h.read(8)
+    try:
+        with open(testfile, 'rb') as h:
+            h.seek(128)
+            data = h.read(8)
+            # Verify that we still get data for the read on this odd row
+            h.seek(131200)
+            mmdata = h.read(8)
+    finally:
+        h.close()
     assert data != b'\x00'*8
     assert mmdata != b'\x00'*8
     #assert True == False

@@ -244,8 +244,11 @@ class Chunk(object):
         if not self.data:
             return
 
-        with open(self.cache_path, 'wb') as h:
-            h.write(self.data)
+        try:
+            with open(self.cache_path, 'wb') as h:
+                h.write(self.data)
+        finally:
+            h.close()
 
     def get(self, idx=0):
         log.debug(f"Getting {self}") 

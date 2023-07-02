@@ -72,10 +72,13 @@ def test_bad_zip(tmpdir):
     assert downloads == ['y_test_overlays.zip.00', 'z_test_00.zip', 'z_test_00.zip.sha256']
     
     # Corrupt the zip at the beginning
-    with open(os.path.join(dl_dir, 'z_test_00.zip'), 'wb') as h:
-        #h.seek(-8, 2)
-        h.write(b'ZZZxxx000ZZZ')
-    
+    try:
+        with open(os.path.join(dl_dir, 'z_test_00.zip'), 'wb') as h:
+            #h.seek(-8, 2)
+            h.write(b'ZZZxxx000ZZZ')
+    finally:
+        h.close()
+
     # This should fail, but preserve the good download
     r.extract()
     downloads = os.listdir(dl_dir)
