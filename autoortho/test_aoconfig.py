@@ -42,9 +42,12 @@ def test_sections(cfg):
 
 
 def test_load(cfg):
-    with open(cfg.conf_file, 'w') as h:
-        h.write('[test]\n')
-        h.write('foo=bar')
+    try:
+        with open(cfg.conf_file, 'w') as h:
+            h.write('[test]\n')
+            h.write('foo=bar')
+    finally:
+        h.close()
 
     cfg.load()
     assert cfg.test

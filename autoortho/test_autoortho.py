@@ -215,13 +215,16 @@ def test_read_mip1(mount, tmpdir):
         print(f"DATA LEN: {len(data)}")
 
     with open(testfile, "rb") as read_h:
-        with open(f"{tmpdir}/testmip1.dds", 'wb') as write_h:
-            write_h.write(read_h.read(128))
-            read_h.seek(16777344)
-            write_h.seek(16777344)
-            write_h.write(read_h.read(mipmapsize))
-            write_h.seek(22369870)
-            write_h.write(b'x\00')
+        try:
+            with open(f"{tmpdir}/testmip1.dds", 'wb') as write_h:
+                write_h.write(read_h.read(128))
+                read_h.seek(16777344)
+                write_h.seek(16777344)
+                write_h.write(read_h.read(mipmapsize))
+                write_h.seek(22369870)
+                write_h.write(b'x\00')
+        finally:
+            write_h.close()
 
     rc = subprocess.call(
         f"identify -verbose {testfile}", 

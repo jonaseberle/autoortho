@@ -220,23 +220,25 @@ class DDS(Structure):
 
     def write(self, filename):
         #self.dump_header()
-        with open(filename, 'wb') as h:
-            h.write(self)
-            log.debug(f"Wrote {h.tell()} bytes")
-            for mipmap in self.mipmap_list:
-                #if mipmap.retrieved:
-                log.debug(f"Writing {mipmap.startpos}")
-                h.seek(mipmap.startpos)
-                if mipmap.databuffer is not None:
-                    h.write(mipmap.databuffer.getbuffer())
-                log.debug(f"Wrote {h.tell()-mipmap.startpos} bytes")
+        try:
+            with open(filename, 'wb') as h:
+                h.write(self)
+                log.debug(f"Wrote {h.tell()} bytes")
+                for mipmap in self.mipmap_list:
+                    #if mipmap.retrieved:
+                    log.debug(f"Writing {mipmap.startpos}")
+                    h.seek(mipmap.startpos)
+                    if mipmap.databuffer is not None:
+                        h.write(mipmap.databuffer.getbuffer())
+                    log.debug(f"Wrote {h.tell()-mipmap.startpos} bytes")
 
-            # Make sure we complete the full file size
-            mipmap = self.mipmap_list[-1]
-            if not mipmap.retrieved:
-                h.seek(self.total_size - 2)
-                h.write(b'x\00')
-
+                # Make sure we complete the full file size
+                mipmap = self.mipmap_list[-1]
+                if not mipmap.retrieved:
+                    h.seek(self.total_size - 2)
+                    h.write(b'x\00')
+        finally:
+            h.close()
 
     def tell(self):
         return self.position

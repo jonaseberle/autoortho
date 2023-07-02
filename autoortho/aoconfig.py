@@ -599,8 +599,11 @@ file_cache_size = 30
         print("Saving config ... ")
         self.set_config()
         
-        with open(self.conf_file, 'w') as h:
-            self.config.write(h)
+        try:
+            with open(self.conf_file, 'w') as h:
+                self.config.write(h)
+        finally:
+            h.close()
         log.info(f"Wrote config file: {self.conf_file}")
         print(f"Wrote config file: {self.conf_file}")
 
