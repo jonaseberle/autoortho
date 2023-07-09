@@ -484,6 +484,6 @@ def run(ao, mountpoint, nothreads=False):
         #max_readahead=0,
         #max_read=262144,
         #default_permissions=True,
-        #direct_io=True
+        direct_io=True
     )
     log.info(f"FUSE: Exiting mount {mountpoint}")
