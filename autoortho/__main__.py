@@ -12,6 +12,7 @@ def setuplogs():
         os.makedirs(log_dir)
 
     logging.basicConfig(
+            force=True,
             #filename=os.path.join(log_dir, "autoortho.log"),
             level=logging.DEBUG if os.environ.get('AO_DEBUG') or CFG.general.debug else logging.INFO,
             handlers=[
