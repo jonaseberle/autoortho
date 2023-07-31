@@ -270,7 +270,7 @@ class AOMount:
                 mountpoint,
                 ".poison"
             ))
-            time.sleep(0.5)
+            #time.sleep(0.5)
 
 
 class AOMountUI(config_ui.ConfigUI, AOMount):
