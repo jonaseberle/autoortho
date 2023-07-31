@@ -90,7 +90,7 @@ def unmount(mountpoint):
             mountpoint,
             ".poison"
         ))
-        time.sleep(0.5)
+        #time.sleep(0.5)
 
 
 def main():
