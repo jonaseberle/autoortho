@@ -476,6 +476,7 @@ class Tile(object):
         return True
    
 
+    @locked
     def write_cache_tile(self, quick_zoom=0):
 
         col, row, width, height, zoom, zoom_diff = self._get_quick_zoom(quick_zoom)
@@ -634,6 +635,7 @@ class Tile(object):
 
         return True
 
+    @locked
     def read_dds_bytes(self, offset, length):
         log.debug(f"READ DDS BYTES: {offset} {length}")
        
@@ -805,6 +807,7 @@ class Tile(object):
         # Return image along with mipmap and zoom level this was created at
         return new_im
 
+    @locked
     def get_best_chunk(self, col, row, mm, zoom):
         for i in range(mm+1, 5):
 
