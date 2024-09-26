@@ -16,11 +16,15 @@ def setuplogs():
     log_streamHandler = logging.StreamHandler()
     log_streamHandler.setFormatter(log_formatter)
 
-    log_fileHandler = logging.handlers.RotatingFileHandler(
+    log_fileHandler = logging.FileHandler(
         filename=os.path.join(log_dir, "autoortho.log"),
-        maxBytes=10485760,
-        backupCount=5
+        mode='w'
     )
+#    log_fileHandler = logging.handlers.RotatingFileHandler(
+#        filename=os.path.join(log_dir, "autoortho.log"),
+#        maxBytes=10485760,
+#        backupCount=5
+#    )
     log_fileHandler.setFormatter(log_formatter)
 
     logging.basicConfig(
