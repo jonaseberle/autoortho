@@ -1,7 +1,10 @@
 *~
 *.swp
+/.venv
 __pycache__
 autoortho.log
+/.idea
+nuitka.log
 out.dds
 /cache
 **/libjpeg-turbo-gcc64
