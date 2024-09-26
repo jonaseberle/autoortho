@@ -19,7 +19,7 @@ autoortho/.version:
 	echo "$(VERSION)" > $@
 
 bin: autoortho/.version
-	python3.10 -m nuitka --verbose --verbose-output=nuitka.log \
+	python3.12 -m nuitka --verbose --verbose-output=nuitka.log \
 		--linux-icon=autoortho/imgs/ao-icon.ico \
 		--enable-plugin=tk-inter \
 		--enable-plugin=eventlet \
