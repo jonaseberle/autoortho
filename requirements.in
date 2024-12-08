@@ -1,6 +1,7 @@
+pip-tools
 refuse
 psutil
-pysimplegui
+pysimplegui==4.*
 Flask
 flask-socketio
 eventlet
