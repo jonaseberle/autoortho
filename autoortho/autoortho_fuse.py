@@ -205,7 +205,11 @@ class AutoOrtho(Operations):
             full_path = self._full_path(path)
             exists = os.path.exists(full_path)
             log.debug(f"GETATTR FULLPATH {full_path}  Exists? {exists}")
-            full_path = self._full_path(path)
+            islink = os.path.islink(full_path)
+            # resolve links
+            if islink:
+                full_path = os.path.realpath(full_path)
+                log.debug(f"GETATTR FULLPATH Islink? {islink} -> using {full_path}")
             st = os.lstat(full_path)
             log.debug(f"GETATTR: Orig stat: {st}")
             attrs = dict((key, getattr(st, key)) for key in ('st_atime', 'st_ctime',
