@@ -6,6 +6,12 @@ import logging
 import logging.handlers
 from aoconfig import CFG
 
+class LogRecordFilter(logging.Filter):
+    def filter(self, record):
+        if not record.exc_info:
+            return True
+        return FileNotFoundError not in record.exc_info
+
 def setuplogs():
     log_dir = os.path.join(os.path.expanduser("~"), ".autoortho-data", "logs")
     if not os.path.isdir(log_dir):
@@ -15,6 +21,7 @@ def setuplogs():
     log_formatter = logging.Formatter("%(levelname)s [%(threadName)s] %(name)s: %(message)s")
     log_streamHandler = logging.StreamHandler()
     log_streamHandler.setFormatter(log_formatter)
+    log_streamHandler.addFilter(LogRecordFilter())
 
     log_fileHandler = logging.FileHandler(
         filename=os.path.join(log_dir, "autoortho.log"),
@@ -26,6 +33,7 @@ def setuplogs():
 #        backupCount=5
 #    )
     log_fileHandler.setFormatter(log_formatter)
+    log_fileHandler.addFilter(LogRecordFilter())
 
     logging.basicConfig(
             #filename=os.path.join(log_dir, "autoortho.log"),
