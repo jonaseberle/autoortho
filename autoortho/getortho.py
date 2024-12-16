@@ -209,7 +209,7 @@ class Chunk(object):
 
         self.cache_dir = os.path.join(cache_dir, tile)
 
-        log.info(f"Slippy {self.col} {self.row} {self.zoom} => Cache {self.cache_dir}")
+        log.debug(f"Slippy {self.col} {self.row} {self.zoom} => Cache {self.cache_dir}")
 
         # Hack override maptype
         #self.maptype = "BI"
